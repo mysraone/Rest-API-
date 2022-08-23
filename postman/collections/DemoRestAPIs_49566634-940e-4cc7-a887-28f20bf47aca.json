@@ -1,0 +1,287 @@
+{
+	"info": {
+		"_postman_id": "f7e7fb9c-8497-465e-a679-24fbfc3e5546",
+		"name": "DemoRestAPIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TC1_Get Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "01ae1ce5-639f-447a-bf8c-23a7de73d95a",
+						"exec": [
+							"tests[\"Test 1 Validating Status Code\"] = responseCode.code ==200;\r",
+							"\r",
+							"tests[\"Validating Status Code\"] = responseBody.has (\"Ferguson\");\r",
+							"var response = JSON.parse(responseBody);\r",
+							"tests[\"page number\"] = response.page == 2;\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "fa5c08ba-e471-4424-861c-8fcf70b8c76b",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users?page=2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC2_Get Page2 User Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "01c7bded-c3fe-4c6d-afca-d896ce3d1635",
+						"exec": [
+							"\r",
+							"var response = JSON.parse(responseBody);\r",
+							"tests[\"verify first name\"] = response.data.first_name == \"Janet\";\r",
+							"tests[\"verify last name\"] = response.data.last_name == \"Weaver\";\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "29d26cbe-cc36-493e-a8c1-14be84f2cfb6",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users/2",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC3_Create a New User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f4eeeb34-1312-4769-97f9-33becd02ea57",
+						"exec": [
+							"var response = JSON.parse(responseBody);\r",
+							"tests[\"name\"] = response.name == \"MySRA\";\r",
+							"tests[\"job\"] = response.job == \"Leader\";\r",
+							"tests[\"TC3 Validating Status Code\"] = responseCode.code ==201;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "59dc7d2f-c166-4765-8fde-11a8dcc9cd47",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"name\": \"MySRA\", \r\n\"job\": \"Leader\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC4_Valid Login to retrun TokenNew Request",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c5956fa1-bd50-4cba-a50b-ffff68e692d0",
+						"exec": [
+							"var response = JSON.parse(responseBody);\r",
+							"tests[\"TC4 Validating Token returned\"] = response.has(\"token\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "a605528d-999a-48b8-bf84-85ccfe9d3746",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/login",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC5_Invalid Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "182718f0-2be5-4c2a-ae3b-76ccc0b5e1e1",
+						"exec": [
+							"var response = JSON.parse(responseBody);\r",
+							"tests[\"TC4 Validating Token NOT returned\"] =response.contains =\"user not found\";\r",
+							"tests[\"TC4 Validating Status Code\"] = responseCode.code ==400;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "559dda37-c144-4be6-8d38-eeaf9ebbdc45",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"gwrggeve.holt@reqres.in\",\r\n    \"password\": \"cityslicka\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/login",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "TC5a_Invalid Login Missing password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "313de567-c6da-4840-a880-f46af17b8513",
+						"exec": [
+							"var response = JSON.parse(responseBody);\r",
+							"tests[\"TC4 Validating Missing Password field\"] =response.contains =\"Missing password\";\r",
+							"tests[\"TC4 Validating Status Code\"] = responseCode.code ==400;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"id": "8d23bbe3-5812-437a-894f-24f91e484486",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\"\r\n    \r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/login",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
